@@ -5,19 +5,22 @@ import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
 import { RegExpRouter } from 'hono/router/reg-exp-router';
 import { Response } from './types';
-import { getUser } from './models/user';
+
+import { AuthRoute, UserRoute } from './routes';
 
 const app = new Hono({ router: new RegExpRouter() });
 
 app.get('/', (c) => c.text('Hello Hono!'));
 app.use(cors(), prettyJSON(), logger());
+app.route('/auth', AuthRoute);
+app.route('/user', UserRoute);
 
 // Error handler
 app.onError((err, c) => {
   const response: Response = {
     ok: false,
     status: 500,
-    message: `❌ ${err.message}`,
+    message: err.message,
   };
 
   return c.json(response, 500);
