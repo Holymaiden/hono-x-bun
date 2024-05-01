@@ -1,7 +1,9 @@
-import { createPool } from '@vercel/postgres';
+import { createClient } from '@supabase/supabase-js';
 import { env } from 'bun';
-const pool = createPool({
-  connectionString: env.POSTGRES_URL,
-});
 
-export default pool;
+const supabase = createClient(
+  String(env.SUPERBASE_URL),
+  String(env.SUPERBASE_KEY)
+);
+
+export default supabase;
